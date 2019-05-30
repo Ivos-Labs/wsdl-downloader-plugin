@@ -47,7 +47,7 @@ public class Process extends AbstractMojo {
     }
 
     /**
-     * Donwload the a wsdl
+     * Donwload a wsdl
      * 
      * @param wsdl DTO with wsdl url, prefix and path
      */
