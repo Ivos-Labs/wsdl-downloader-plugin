@@ -19,7 +19,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 @Mojo(name = "downloadWSDL", requiresDependencyResolution = ResolutionScope.COMPILE)
 public class Process extends AbstractMojo {
 
-    /** The wsdls to be downloaded */
+    /** List of wsdl to be downloaded */
     @Parameter
     private List<Wsdl> wsdls;
 
