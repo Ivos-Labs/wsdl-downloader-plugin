@@ -10,13 +10,13 @@ package com.ivoslasbs.wsdldownloader.core;
  */
 public class Wsdl {
 
-    /** The url */
+    /** The wsdl url */
     private String url;
 
-    /** The prefiz */
+    /** The prefix to be used in file names */
     private String prefix;
 
-    /** The path */
+    /** The path where will be saved the wsdl*/
     private String path;
 
     /** */
