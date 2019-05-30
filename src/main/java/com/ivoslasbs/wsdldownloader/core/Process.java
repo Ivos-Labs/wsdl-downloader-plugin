@@ -3,6 +3,8 @@
  */
 package com.ivoslasbs.wsdldownloader.core;
 
+import java.util.List;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -19,15 +21,7 @@ public class Process extends AbstractMojo {
 
     /** */
     @Parameter
-    private String wsdl;
-
-    /** */
-    @Parameter
-    private String prefix;
-
-    /** */
-    @Parameter
-    private String path;
+    private List<Wsdl> wsdls;
 
     /*
      * (non-Javadoc)
@@ -36,16 +30,37 @@ public class Process extends AbstractMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-	super.getLog().info("downloading wsdl");
-	super.getLog().info("      wsdl: " + this.wsdl);
-	super.getLog().info("    prefix: " + this.prefix);
-	super.getLog().info("      path: " + this.path);
 
-	WSDLDownloader downloader = new WSDLDownloader(this.wsdl, this.prefix, this.path);
+	super.getLog().info("-----------------------------------------------------------------");
+	super.getLog().info("wsdl-downloader-maven-plugin starting");
+	super.getLog().info("-----------------------------------------------------------------");
+	try {
+	    this.wsdls.forEach(this::download);
+	} catch (Exception e) {
+	    this.getLog().error("Error ");
+	    this.getLog().error(e);
+	}
+
+	super.getLog().info("wsdl-downloader-maven-plugin finished");
+	super.getLog().info("-----------------------------------------------------------------");
+
+    }
+
+    /**
+     * 
+     * @param wsdl
+     */
+    private void download(Wsdl wsdl) {
+
+	super.getLog().info("downloading wsdl");
+	super.getLog().info("      wsdl: " + wsdl.getUrl());
+	super.getLog().info("    prefix: " + wsdl.getPrefix());
+	super.getLog().info("      path: " + wsdl.getPath());
+
+	WSDLDownloader downloader = new WSDLDownloader(wsdl.getUrl(), wsdl.getPrefix(), wsdl.getPath());
 	downloader.download();
 	super.getLog().info("wsdl downloaded");
 	super.getLog().info("-----------------------------------------------------------------");
-
     }
 
 }

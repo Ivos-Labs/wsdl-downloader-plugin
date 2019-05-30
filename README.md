@@ -15,12 +15,16 @@ Plugin to download wsdls and resources
                             <goal>downloadWSDL</goal>
                         </goals>
                         <configuration>
-                        		<wsdl>http://server/serviceY?wsdl</wsdl>
-                        		<prefix>serviceY</prefix>
-                            <path>${basedir}/src/main/resources/wsdls</path>
+                            <wsdls>
+                                <wsdl>
+                                    <url>http://server/serviceY?wsdl</url>
+                                    <prefix>serviceY</prefix>
+                                    <path>${basedir}/src/main/resources/wsdls</path>
+                                </wsdl>
+                            </wsdls>                   		
                         </configuration> 
                     </execution>
                     
-               <executions>
-          <plugin>
+               </executions>
+          </plugin>
 ```          
