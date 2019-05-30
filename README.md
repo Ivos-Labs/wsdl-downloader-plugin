@@ -2,7 +2,7 @@
 Plugin to download wsdls and resources
 
 
-
+```xml
           <plugin>
                 <groupId>com.ivoslabs</groupId>
                 <artifactId>wsdl-downloader-maven-plugin</artifactId>
@@ -23,3 +23,4 @@ Plugin to download wsdls and resources
                     
                <executions>
           <plugin>
+```          
