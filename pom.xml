@@ -3,7 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<groupId>com.ivoslabs</groupId>
 	<artifactId>wsdl-downloader-maven-plugin</artifactId>
 	<version>1.0.0</version>
@@ -37,7 +36,6 @@
 			<version>3.0</version>
 		</dependency>
 
-		<!-- dependencies to annotations -->
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
@@ -49,28 +47,63 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.0.4</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.4</version>
 			</plugin>
-			<!-- other plugins -->
+
 		</plugins>
 	</build>
 
 	<organization>
 		<name>Ivos Solutions Labs</name>
-		<url>http://www.ivoslabs.com</url>
+		<url>https://www.ivoslabs.com</url>
 	</organization>
 
 	<developers>
 		<developer>
+			<id>imperezivan</id>
 			<name>Ivan Perez</name>
 			<email>iperez@ivoslabs.com</email>
 			<organization>Ivos Solutions Labs</organization>
+			<organizationUrl>https://www.ivoslabs.com</organizationUrl>
+			<url>https://github.com/imperezivan</url>
+			<timezone>-5</timezone>
 		</developer>
 	</developers>
-
 
 	<scm>
 		<connection>scm:git:git://github.com/Ivos-Labs/wsdl-downloader-plugin.git</connection>
@@ -82,8 +115,5 @@
 		<system>GitHub</system>
 		<url>https://github.com/Ivos-Labs/wsdl-downloader-plugin/issues</url>
 	</issueManagement>
-
-
-
 
 </project>

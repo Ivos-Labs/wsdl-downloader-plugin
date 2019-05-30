@@ -27,59 +27,61 @@ import org.w3c.dom.NodeList;
  */
 public class WSDLDownloader {
 
-    /** */
+    /** The constant http://www.w3.org/2001/XMLSchema */
     private static final String SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
-    /** */
+    /** The constant schemaLocation */
     private static final String SCHEMA_LOCATION = "schemaLocation";
 
-    /** */
+    /** The constant http://schemas.xmlsoap.org/wsdl/ */
     private static final String WSDL = "http://schemas.xmlsoap.org/wsdl/";
 
-    /** */
+    /** The constant location */
     private static final String WSDL_LOCATION = "location";
 
-    /** */
+    /** The constant import */
     private static final String IMPORT = "import";
 
-    /** */
+    /** The constant include */
     private static final String INCLUDE = "include";
 
-    /** */
+    /** The wsdl */
     private String wsdl;
 
-    /** */
-    private String xsdPrefix;
+    /** The prefix */
+    private String prefix;
 
-    /** */
+    /** The path */
     private File path;
 
-    /** */
+    /** Th xsds */
     private final Map<String, String> xsds = new HashMap<String, String>();
 
-   /**
-    * 
-    * @param wsdl
-    * @param xsdPrefix
-    * @param path
-    */
-    public WSDLDownloader(String wsdl, String xsdPrefix, String path) {
+    /**
+     * Create a WSDLDownloader
+     * 
+     * @param wsdl   WSDL url to download
+     * @param prefix String to use as prefix in the downloaded files
+     * @param path   directory where will saved the downloaded files
+     */
+    public WSDLDownloader(String wsdl, String prefix, String path) {
 	this.wsdl = wsdl;
-	this.xsdPrefix = xsdPrefix;
+	this.prefix = prefix;
 	this.path = new File(path);
     }
 
     /**
-     * 
+     * download wsdl and their resources
      */
     public void download() {
 	downloadXML(this.wsdl, Boolean.TRUE);
     }
 
     /**
+     * download a file and their resources
      * 
-     * @param uri
-     * @param isWsdl
+     * @param uri    file url to download
+     * @param isWsdl indicates if is wsdl
      */
     private void downloadXML(String uri, boolean isWsdl) {
 
@@ -88,9 +90,9 @@ public class WSDLDownloader {
 	    String fileName;
 
 	    if (isWsdl) {
-		fileName = this.xsdPrefix + ".wsdl";
+		fileName = this.prefix + ".wsdl";
 	    } else {
-		fileName = this.xsdPrefix + this.getNameByParams(uri) + ".xsd";
+		fileName = this.prefix + this.getNameByParams(uri) + ".xsd";
 	    }
 
 	    this.xsds.put(uri, fileName);
@@ -113,12 +115,13 @@ public class WSDLDownloader {
     }
 
     /**
+     * Process all child nodes of a Element
      * 
-     * @param node
+     * @param element Element to process
      */
-    private void processChildElements(final Element node) {
+    private void processChildElements(Element element) {
 
-	NodeList nodeList = node.getChildNodes();
+	NodeList nodeList = element.getChildNodes();
 
 	//
 	IntFunction<Node> toNode = nodeList::item;
@@ -132,8 +135,9 @@ public class WSDLDownloader {
     }
 
     /**
+     * Process an element
      * 
-     * @param element
+     * @param element Element to process
      */
     private void processElement(Element element) {
 
@@ -153,9 +157,10 @@ public class WSDLDownloader {
     }
 
     /**
+     * Update remote urls to local urls in an element
      * 
-     * @param element
-     * @param attributeName
+     * @param element       Element ot update
+     * @param attributeName attribute name with url to download
      */
     private void updateElement(Element element, String attributeName) {
 	String uri = element.getAttribute(attributeName);
@@ -167,9 +172,10 @@ public class WSDLDownloader {
     }
 
     /**
+     * Build a string using first param and value from a url
      * 
      * @param url
-     * @return
+     * @return builded String
      */
     private String getNameByParams(String url) {
 
@@ -181,7 +187,6 @@ public class WSDLDownloader {
 	    if (auxUrl.length > 1) {
 		name = "_" + auxUrl[0] + "_" + auxUrl[1];
 	    }
-
 	}
 
 	return name;
