@@ -45,13 +45,13 @@ Plugin to download wsdls and resources
                                 <wsdl>
                                     <url>http://server/serviceY?wsdl</url>
                                     <prefix>serviceY</prefix>
-                                    <path>${basedir}/src/main/resources/wsdls</path>
+                                    <path>src/main/resources/wsdls</path>
                                 </wsdl>
                                 
                                 <wsdl>
                                     <url>http://server/serviceX?wsdl</url>
                                     <prefix>serviceX</prefix>
-                                    <path>${basedir}/src/main/resources/wsdls</path>
+                                    <path>src/main/resources/wsdls</path>
                                 </wsdl>
                                 
                             </wsdls>                   		

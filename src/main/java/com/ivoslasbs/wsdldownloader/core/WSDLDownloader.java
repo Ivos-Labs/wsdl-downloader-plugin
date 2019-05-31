@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -64,10 +65,11 @@ public class WSDLDownloader {
      * @param prefix String to use as prefix in the downloaded files
      * @param path   directory where will saved the downloaded files
      */
-    public WSDLDownloader(String wsdl, String prefix, String path) {
+    public WSDLDownloader(String wsdl, String prefix, File path) {
 	this.wsdl = wsdl;
 	this.prefix = prefix;
-	this.path = new File(path);
+	this.path = path;
+
     }
 
     /**
@@ -106,7 +108,13 @@ public class WSDLDownloader {
 
 	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
-	    transformer.transform(new DOMSource(document), new StreamResult(new File(this.path, fileName)));
+	    File file = new File(this.path, fileName);
+
+	    if (!file.getParentFile().exists()) {
+		file.getParentFile().mkdirs();
+	    }
+
+	    transformer.transform(new DOMSource(document), new StreamResult(file));
 
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
@@ -164,11 +172,16 @@ public class WSDLDownloader {
      */
     private void updateElement(Element element, String attributeName) {
 	String uri = element.getAttribute(attributeName);
-	if (!this.xsds.containsKey(uri)) {
-	    this.downloadXML(uri, Boolean.FALSE);
+
+	if (!StringUtils.isBlank(uri)) {
+
+	    if (!this.xsds.containsKey(uri)) {
+		this.downloadXML(uri, Boolean.FALSE);
+	    }
+
+	    // get local name generated at downloadXML
+	    element.setAttribute(attributeName, this.xsds.get(uri));
 	}
-	// get local name generated at downloadXML
-	element.setAttribute(attributeName, this.xsds.get(uri));
     }
 
     /**

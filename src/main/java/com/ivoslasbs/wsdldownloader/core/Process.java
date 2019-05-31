@@ -3,6 +3,7 @@
  */
 package com.ivoslasbs.wsdldownloader.core;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -23,6 +24,9 @@ public class Process extends AbstractMojo {
     @Parameter
     private List<Wsdl> wsdls;
 
+    @Parameter(defaultValue = "${basedir}", readonly = true)
+    public String basedir;
+
     /*
      * (non-Javadoc)
      * 
@@ -39,6 +43,7 @@ public class Process extends AbstractMojo {
 	    this.wsdls.forEach(this::download);
 	} catch (Exception e) {
 	    this.getLog().error(e);
+	    throw new RuntimeException(e);
 	}
 
 	super.getLog().info("wsdl-downloader-maven-plugin finished");
@@ -58,7 +63,8 @@ public class Process extends AbstractMojo {
 	super.getLog().info("    prefix: " + wsdl.getPrefix());
 	super.getLog().info("      path: " + wsdl.getPath());
 
-	WSDLDownloader downloader = new WSDLDownloader(wsdl.getUrl(), wsdl.getPrefix(), wsdl.getPath());
+	File path = new File(new File(this.basedir), wsdl.getPath());
+	WSDLDownloader downloader = new WSDLDownloader(wsdl.getUrl(), wsdl.getPrefix(), path);
 	downloader.download();
 	super.getLog().info("wsdl downloaded");
 	super.getLog().info("-----------------------------------------------------------------");
