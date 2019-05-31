@@ -185,6 +185,23 @@ public class WSDLDownloader {
     }
 
     /**
+     * Gets last pasr from a url
+     * 
+     * @param url
+     * @return
+     */
+    private String getLastPart(String url) {
+
+	String name = null;
+	String query[] = url.split("/");
+	name = query[query.length - 1];
+	String params[] = name.split("\\?");
+	name = params[0];
+
+	return name;
+    }
+
+    /**
      * Build a string using first param and value from a url
      * 
      * @param url
@@ -198,8 +215,18 @@ public class WSDLDownloader {
 	if (query.length > 1) {
 	    String auxUrl[] = query[1].split("=");
 	    if (auxUrl.length > 1) {
-		name = "_" + auxUrl[0] + "_" + auxUrl[1];
+		if (auxUrl[0].equals("xsd")) {
+		    name = "_" + auxUrl[1];
+		} else {
+		    name = "_" + auxUrl[0] + "_" + auxUrl[1];
+		}
+	    } else if (auxUrl[0].trim().isEmpty()) {
+		name = this.getLastPart(url);
+	    } else {
+		name = "_" + auxUrl[0];
 	    }
+	} else {
+	    name = this.getLastPart(url);
 	}
 
 	return name;
