@@ -46,11 +46,13 @@ Plugin to download wsdls and resources
 
 2. **Run Generate sources maven command **
 
+
 ```bash
 mvn generate-sources
 ```
 
 3. **Expected result**
+
 
 ```
        wsdls 
