@@ -3,7 +3,7 @@ Plugin to download wsdls and resources
 
 
      
-     
+
 1. **Add and config plugin **
 
 
@@ -46,12 +46,12 @@ Plugin to download wsdls and resources
 
 2. **Run Generate sources maven command **
 
-```sh
+```bash
 mvn generate-sources
 ```
- 
+
 3. **Expected result**
-       
+
 ```
        wsdls 
        ├───serviceY.wsdl
