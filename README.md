@@ -55,7 +55,8 @@ mvn generate-sources
 
 
 ```
-       wsdls 
+Project/src/main/resources/
+  └────wsdls 
        ├───serviceY.wsdl
        ├───serviceY_xsd_1.xsd
        ├───serviceY_xsd_2.xsd
