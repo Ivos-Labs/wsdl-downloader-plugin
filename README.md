@@ -2,7 +2,7 @@
 Plugin to download wsdls and resources
 
 
-1. **Add and config plugin **
+1. **Add and config plugin**
 
 
 ```xml
@@ -43,7 +43,7 @@ Plugin to download wsdls and resources
 ```
 
 
-2. **Run Generate sources maven command **
+2. **Run Generate sources maven command**
 
 
 ```bash
