@@ -43,7 +43,7 @@ Plugin to download wsdls and resources
 ```
 
 
-2. **Run Generate sources maven command**
+2. **Run generate-sources maven command**
 
 
 ```bash
