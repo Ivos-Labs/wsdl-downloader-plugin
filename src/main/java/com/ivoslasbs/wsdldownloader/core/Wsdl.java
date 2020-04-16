@@ -16,12 +16,12 @@ public class Wsdl {
     /** The prefix to be used in file names */
     private String prefix;
 
-    /** The path where will be saved the wsdl*/
+    /** The path where will be saved the wsdl */
     private String path;
 
     /** */
     public Wsdl() {
-	super();
+        super();
     }
 
     /**
@@ -30,7 +30,7 @@ public class Wsdl {
      * @return {@code String} The url
      */
     public String getUrl() {
-	return this.url;
+        return this.url;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Wsdl {
      * @param url {@code String} The url to set
      */
     public void setUrl(String url) {
-	this.url = url;
+        this.url = url;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Wsdl {
      * @return {@code String} The prefix
      */
     public String getPrefix() {
-	return this.prefix;
+        return this.prefix;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Wsdl {
      * @param prefix {@code String} The prefix to set
      */
     public void setPrefix(String prefix) {
-	this.prefix = prefix;
+        this.prefix = prefix;
     }
 
     /**
@@ -66,7 +66,7 @@ public class Wsdl {
      * @return {@code String} The path
      */
     public String getPath() {
-	return this.path;
+        return this.path;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Wsdl {
      * @param path {@code String} The path to set
      */
     public void setPath(String path) {
-	this.path = path;
+        this.path = path;
     }
 
 }
