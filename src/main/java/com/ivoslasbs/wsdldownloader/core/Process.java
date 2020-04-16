@@ -5,6 +5,7 @@ package com.ivoslasbs.wsdldownloader.core;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,6 +25,10 @@ public class Process extends AbstractMojo {
     @Parameter
     private List<Wsdl> wsdls;
 
+    /** List of java properties */
+    @Parameter
+    private List<Property> properties;
+
     @Parameter(defaultValue = "${basedir}", readonly = true)
     public String basedir;
 
@@ -35,19 +40,26 @@ public class Process extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
-	super.getLog().info("-----------------------------------------------------------------");
-	super.getLog().info("wsdl-downloader-maven-plugin starting");
-	super.getLog().info("-----------------------------------------------------------------");
+        super.getLog().info("-----------------------------------------------------------------");
+        super.getLog().info("wsdl-downloader-maven-plugin starting");
+        super.getLog().info("-----------------------------------------------------------------");
 
-	try {
-	    this.wsdls.forEach(this::download);
-	} catch (Exception e) {
-	    this.getLog().error(e);
-	    throw new RuntimeException(e);
-	}
+        if (this.properties != null && !this.properties.isEmpty()) {
+            super.getLog().info("Setting properties");
+            Consumer<Property> printProp = prop -> this.getLog().info("    Setting property " + prop.getKey() + ":" + prop.getValue());
+            this.properties.stream().peek(printProp).forEach(prop -> System.setProperty(prop.getKey(), prop.getValue()));
+            super.getLog().info("Properties set");
+        }
 
-	super.getLog().info("wsdl-downloader-maven-plugin finished");
-	super.getLog().info("-----------------------------------------------------------------");
+        try {
+            this.wsdls.forEach(this::download);
+        } catch (Exception e) {
+            this.getLog().error(e);
+            throw new RuntimeException(e);
+        }
+
+        super.getLog().info("wsdl-downloader-maven-plugin finished");
+        super.getLog().info("-----------------------------------------------------------------");
 
     }
 
@@ -58,16 +70,16 @@ public class Process extends AbstractMojo {
      */
     private void download(Wsdl wsdl) {
 
-	super.getLog().info("downloading wsdl");
-	super.getLog().info("      wsdl: " + wsdl.getUrl());
-	super.getLog().info("    prefix: " + wsdl.getPrefix());
-	super.getLog().info("      path: " + wsdl.getPath());
+        super.getLog().info("downloading wsdl");
+        super.getLog().info("      wsdl: " + wsdl.getUrl());
+        super.getLog().info("    prefix: " + wsdl.getPrefix());
+        super.getLog().info("      path: " + wsdl.getPath());
 
-	File path = new File(new File(this.basedir), wsdl.getPath());
-	WSDLDownloader downloader = new WSDLDownloader(wsdl.getUrl(), wsdl.getPrefix(), path);
-	downloader.download();
-	super.getLog().info("wsdl downloaded");
-	super.getLog().info("-----------------------------------------------------------------");
+        File path = new File(new File(this.basedir), wsdl.getPath());
+        WSDLDownloader downloader = new WSDLDownloader(wsdl.getUrl(), wsdl.getPrefix(), path);
+        downloader.download();
+        super.getLog().info("wsdl downloaded");
+        super.getLog().info("-----------------------------------------------------------------");
     }
 
 }
