@@ -66,9 +66,9 @@ public class WSDLDownloader {
      * @param path   directory where will saved the downloaded files
      */
     public WSDLDownloader(String wsdl, String prefix, File path) {
-	this.wsdl = wsdl;
-	this.prefix = prefix;
-	this.path = path;
+        this.wsdl = wsdl;
+        this.prefix = prefix;
+        this.path = path;
 
     }
 
@@ -76,7 +76,7 @@ public class WSDLDownloader {
      * download wsdl and their resources
      */
     public void download() {
-	downloadXML(this.wsdl, Boolean.TRUE);
+        downloadXML(this.wsdl, Boolean.TRUE);
     }
 
     /**
@@ -87,38 +87,38 @@ public class WSDLDownloader {
      */
     private void downloadXML(String uri, boolean isWsdl) {
 
-	try {
+        try {
 
-	    String fileName;
+            String fileName;
 
-	    if (isWsdl) {
-		fileName = this.prefix + ".wsdl";
-	    } else {
-		fileName = this.prefix + this.getNameByParams(uri) + ".xsd";
-	    }
+            if (isWsdl) {
+                fileName = this.prefix + ".wsdl";
+            } else {
+                fileName = this.prefix + this.getNameByParams(uri) + ".xsd";
+            }
 
-	    this.xsds.put(uri, fileName);
+            this.xsds.put(uri, fileName);
 
-	    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	    documentBuilderFactory.setNamespaceAware(Boolean.TRUE);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(Boolean.TRUE);
 
-	    Document document = documentBuilderFactory.newDocumentBuilder().parse(uri);
+            Document document = documentBuilderFactory.newDocumentBuilder().parse(uri);
 
-	    processChildElements(document.getDocumentElement());
+            processChildElements(document.getDocumentElement());
 
-	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
-	    File file = new File(this.path, fileName);
+            File file = new File(this.path, fileName);
 
-	    if (!file.getParentFile().exists()) {
-		file.getParentFile().mkdirs();
-	    }
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
 
-	    transformer.transform(new DOMSource(document), new StreamResult(file));
+            transformer.transform(new DOMSource(document), new StreamResult(file));
 
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -129,16 +129,16 @@ public class WSDLDownloader {
      */
     private void processChildElements(Element element) {
 
-	NodeList nodeList = element.getChildNodes();
+        NodeList nodeList = element.getChildNodes();
 
-	//
-	IntFunction<Node> toNode = nodeList::item;
-	//
-	Predicate<Node> isElement = Element.class::isInstance;
-	//
-	Function<Node, Element> toElement = Element.class::cast;
-	//
-	IntStream.range(0, nodeList.getLength()).mapToObj(toNode).filter(isElement).map(toElement).forEach(this::processElement);
+        //
+        IntFunction<Node> toNode = nodeList::item;
+        //
+        Predicate<Node> isElement = Element.class::isInstance;
+        //
+        Function<Node, Element> toElement = Element.class::cast;
+        //
+        IntStream.range(0, nodeList.getLength()).mapToObj(toNode).filter(isElement).map(toElement).forEach(this::processElement);
 
     }
 
@@ -149,18 +149,18 @@ public class WSDLDownloader {
      */
     private void processElement(Element element) {
 
-	if (element.getNamespaceURI() != null) {
-	    if (element.getNamespaceURI().equals(SCHEMA) && element.getLocalName().equals(IMPORT)) {
-		this.updateElement(element, SCHEMA_LOCATION);
-	    }
-	    if (element.getNamespaceURI().equals(SCHEMA) && element.getLocalName().equals(INCLUDE)) {
-		this.updateElement(element, SCHEMA_LOCATION);
-	    } else if (element.getNamespaceURI().equals(WSDL) && element.getLocalName().equals(IMPORT)) {
-		this.updateElement(element, WSDL_LOCATION);
-	    } else {
-		processChildElements(element);
-	    }
-	}
+        if (element.getNamespaceURI() != null) {
+            if (element.getNamespaceURI().equals(SCHEMA) && element.getLocalName().equals(IMPORT)) {
+                this.updateElement(element, SCHEMA_LOCATION);
+            }
+            if (element.getNamespaceURI().equals(SCHEMA) && element.getLocalName().equals(INCLUDE)) {
+                this.updateElement(element, SCHEMA_LOCATION);
+            } else if (element.getNamespaceURI().equals(WSDL) && element.getLocalName().equals(IMPORT)) {
+                this.updateElement(element, WSDL_LOCATION);
+            } else {
+                processChildElements(element);
+            }
+        }
 
     }
 
@@ -171,17 +171,17 @@ public class WSDLDownloader {
      * @param attributeName attribute name with url to download
      */
     private void updateElement(Element element, String attributeName) {
-	String uri = element.getAttribute(attributeName);
+        String uri = element.getAttribute(attributeName);
 
-	if (!StringUtils.isBlank(uri)) {
+        if (!StringUtils.isBlank(uri)) {
 
-	    if (!this.xsds.containsKey(uri)) {
-		this.downloadXML(uri, Boolean.FALSE);
-	    }
+            if (!this.xsds.containsKey(uri)) {
+                this.downloadXML(uri, Boolean.FALSE);
+            }
 
-	    // get local name generated at downloadXML
-	    element.setAttribute(attributeName, this.xsds.get(uri));
-	}
+            // get local name generated at downloadXML
+            element.setAttribute(attributeName, this.xsds.get(uri));
+        }
     }
 
     /**
@@ -192,13 +192,13 @@ public class WSDLDownloader {
      */
     private String getLastPart(String url) {
 
-	String name = null;
-	String query[] = url.split("/");
-	name = query[query.length - 1];
-	String params[] = name.split("\\?");
-	name = params[0];
+        String name = null;
+        String query[] = url.split("/");
+        name = query[query.length - 1];
+        String params[] = name.split("\\?");
+        name = params[0];
 
-	return name;
+        return name;
     }
 
     /**
@@ -209,27 +209,27 @@ public class WSDLDownloader {
      */
     private String getNameByParams(String url) {
 
-	String name = null;
-	String query[] = url.split("\\?");
+        String name = null;
+        String query[] = url.split("\\?");
 
-	if (query.length > 1) {
-	    String auxUrl[] = query[1].split("=");
-	    if (auxUrl.length > 1) {
-		if (auxUrl[0].equals("xsd")) {
-		    name = "_" + auxUrl[1];
-		} else {
-		    name = "_" + auxUrl[0] + "_" + auxUrl[1];
-		}
-	    } else if (auxUrl[0].trim().isEmpty()) {
-		name = this.getLastPart(url);
-	    } else {
-		name = "_" + auxUrl[0];
-	    }
-	} else {
-	    name = this.getLastPart(url);
-	}
+        if (query.length > 1) {
+            String auxUrl[] = query[1].split("=");
+            if (auxUrl.length > 1) {
+                if (auxUrl[0].equals("xsd")) {
+                    name = "_" + auxUrl[1];
+                } else {
+                    name = "_" + auxUrl[0] + "_" + auxUrl[1];
+                }
+            } else if (auxUrl[0].trim().isEmpty()) {
+                name = this.getLastPart(url);
+            } else {
+                name = "_" + auxUrl[0];
+            }
+        } else {
+            name = this.getLastPart(url);
+        }
 
-	return name;
+        return name;
     }
 
 }
