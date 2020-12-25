@@ -2,6 +2,7 @@
 package com.ivoslasbs.wsdldownloader.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -10,7 +11,9 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -20,10 +23,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import com.ivoslasbs.wsdldownloader.ex.WSDLDownloaderException;
 
 /**
+ * WSDL Downloader
  * 
- * @author www.ivoslabs.com
+ * @since 1.0.0
+ * @author imperezivan
  *
  */
 public class WSDLDownloader {
@@ -46,20 +54,20 @@ public class WSDLDownloader {
     /** The constant include */
     private static final String INCLUDE = "include";
 
-    /** The wsdl */
+    /** The WSDL url */
     private String wsdl;
 
-    /** The prefix */
+    /** The prefix to be used in file names */
     private String prefix;
 
-    /** The path */
+    /** The path where will be save the WSDL and its XSD's */
     private File path;
 
     /** Th xsds */
     private final Map<String, String> xsds = new HashMap<String, String>();
 
     /**
-     * Create a WSDLDownloader
+     * Creates a WSDLDownloader instance
      * 
      * @param wsdl   WSDL url to download
      * @param prefix String to use as prefix in the downloaded files
@@ -73,22 +81,30 @@ public class WSDLDownloader {
     }
 
     /**
-     * download wsdl and their resources
+     * Downloads wsdl and their resources
+     * 
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
-    public void download() {
+    public void download() throws SAXException, IOException, ParserConfigurationException, TransformerException {
         downloadXML(this.wsdl, Boolean.TRUE);
     }
 
     /**
-     * download a file and their resources
+     * Downloads a file and their resources
      * 
      * @param uri    file url to download
      * @param isWsdl indicates if is wsdl
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     * @throws TransformerException
      */
     private void downloadXML(String uri, boolean isWsdl) {
 
         try {
-
             String fileName;
 
             if (isWsdl) {
@@ -116,8 +132,8 @@ public class WSDLDownloader {
 
             transformer.transform(new DOMSource(document), new StreamResult(file));
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (TransformerException | SAXException | IOException | ParserConfigurationException e) {
+            throw new WSDLDownloaderException(e);
         }
 
     }
@@ -146,6 +162,10 @@ public class WSDLDownloader {
      * Process an element
      * 
      * @param element Element to process
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
     private void processElement(Element element) {
 
@@ -165,10 +185,14 @@ public class WSDLDownloader {
     }
 
     /**
-     * Update remote urls to local urls in an element
+     * Updates remote urls to local urls in an element
      * 
      * @param element       Element ot update
      * @param attributeName attribute name with url to download
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
     private void updateElement(Element element, String attributeName) {
         String uri = element.getAttribute(attributeName);
