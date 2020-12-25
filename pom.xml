@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ivoslabs</groupId>
-	<artifactId>wsdl-downloader-maven-plugin</artifactId>
+	<artifactId>wsdl-downloader-plugin</artifactId>
 	<version>1.0.0</version>
 	<packaging>maven-plugin</packaging>
 
-	<name>wsdl-downloader-maven-plugin</name>
+	<name>WSDL downloader plugin</name>
 	<description>Plugin to download WSDLs and resources</description>
 	<url>https://github.com/Ivos-Labs/wsdl-downloader-plugin</url>
 
@@ -26,6 +26,10 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+
+		<!-- tests -->
+		<junit.version>4.12</junit.version>
 	</properties>
 
 	<dependencies>
@@ -41,6 +45,14 @@
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.4</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
