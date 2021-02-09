@@ -128,4 +128,15 @@
 		<url>https://github.com/Ivos-Labs/wsdl-downloader-plugin/issues</url>
 	</issueManagement>
 
+	<!-- Local nexus maven -->
+	<distributionManagement>
+		<repository>
+			<id>local-nexus-maven</id>
+			<url>http://nexus.ivoslabs.com:8081/</url>
+		</repository>
+		<snapshotRepository>
+			<id>local-nexus-maven</id>
+			<url>http://nexus.ivoslabs.com:8081/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
